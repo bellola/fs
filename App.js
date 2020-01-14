@@ -73,8 +73,9 @@ export default class ImagePickerExample extends React.Component {
   scannerThunk = async image => {
     // let request = base64.toByteArray(image)
     let request = image
-     await  axios.post('http://192.168.1.81:3000/test', {
-     request
+     await  axios.post('http://192.168.1.81:3000/test?hello', {
+    //  hey: 'there'
+    request
     })
       .then(function(response){
         console.log(response)
