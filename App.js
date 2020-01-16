@@ -28,6 +28,9 @@ export default class ImagePickerExample extends React.Component {
           onPress={this._pickImage}
         />
         <Button
+        title="Take a selfie"
+        />
+        <Button
         title="Analize"
         onPress={()=>this.scannerThunk(image64)}
         />
@@ -35,6 +38,10 @@ export default class ImagePickerExample extends React.Component {
           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
         {ageGuess &&
         <Text>  {this.state.ageGuess}</Text>}
+        <Button
+        title="Reset"
+        onPress={() => this.setState({image: null, image64: null, ageGuess: null})}
+        />
       </View>
     );
   }
