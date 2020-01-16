@@ -1,21 +1,24 @@
 
 import * as React from 'react';
-import { Button, Image, View } from 'react-native';
+import { Button, Image, View, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import axios from 'axios'
-import base64 from 'base64-js'
+
 
 export default class ImagePickerExample extends React.Component {
   state = {
     image: null,
-    image64: null
+    image64: null,
+    ageGuess: null
   };
 
   render() {
     let { image } = this.state;
     let { image64 } = this.state
+    let { ageGuess } = this.state
+    
 
 
     return (
@@ -30,6 +33,8 @@ export default class ImagePickerExample extends React.Component {
         />
         {image &&
           <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+        {ageGuess &&
+        <Text>  {this.state.ageGuess}</Text>}
       </View>
     );
   }
@@ -73,14 +78,21 @@ export default class ImagePickerExample extends React.Component {
   scannerThunk = async image => {
     // let request = base64.toByteArray(image)
     let request = image
-     await  axios.post('http://192.168.1.81:3000/test', {
+     await  axios.post('http://10.13.46.56:3000/test', {
     //  hey: 'there'
     request
     })
-      .then(function(response){
+
+      .then(response => {
+        this.setState({ageGuess: response.request.response})
         console.log(response.request.response)
+        console.log('THIS IS STATE',this.state.ageGuess)
+        // this.setState({ageGuess: response.request.response})
       })
     };
+
+
+
 
 
 
