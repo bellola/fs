@@ -1,9 +1,11 @@
 
 import * as React from 'react';
-import { Button, Image, View, Text } from 'react-native';
+import { Button, Image, View, Text, TouchableOpacity } from 'react-native';
+import { Camera } from 'expo-camera'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import axios from 'axios'
 
 
@@ -11,24 +13,36 @@ export default class ImagePickerExample extends React.Component {
   state = {
     image: null,
     image64: null,
-    ageGuess: null
+    ageGuess: null,
+    takePicture: null,
+    type: Camera.Constants.Type.back,
   };
 
   render() {
     let { image } = this.state;
     let { image64 } = this.state
     let { ageGuess } = this.state
+    let {takePicture} = this.state
     
 
 
     return (
+
+
+
+
+
+
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button
-          title="Pick an image from camera roll"
-          onPress={this._pickImage}
-        />
+
         <Button
         title="Take a selfie"
+        onPress={()=>this.setState({takePicture: true})}
+        />
+        
+       <Button
+          title="Pick an image from camera roll"
+          onPress={this._pickImage}
         />
         <Button
         title="Analize"
@@ -40,14 +54,16 @@ export default class ImagePickerExample extends React.Component {
         <Text>  {this.state.ageGuess}</Text>}
         <Button
         title="Reset"
-        onPress={() => this.setState({image: null, image64: null, ageGuess: null})}
+        onPress={() => this.setState({image: null, image64: null, ageGuess: null, takePicture: null})}
         />
       </View>
+      
     );
   }
 
   componentDidMount() {
     this.getPermissionAsync();
+    this.getCameraPermissionAsync()
     console.log('hi');
   }
 
@@ -55,7 +71,16 @@ export default class ImagePickerExample extends React.Component {
     if (Constants.platform.ios) {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
+        alert('Sorry, we need camera roll permissions');
+      }
+    }
+  }
+
+  getCameraPermissionAsync = async () => {
+    if(Constants.platform.ios) {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA);
+      if(status !== 'granted') {
+        alert('Sorry, we need camera permissions')
       }
     }
   }
@@ -68,6 +93,8 @@ export default class ImagePickerExample extends React.Component {
       quality: 1,
       base64: true
     });
+
+
 
     // console.log(result);
 
@@ -97,11 +124,4 @@ export default class ImagePickerExample extends React.Component {
         // this.setState({ageGuess: response.request.response})
       })
     };
-
-
-
-
-
-
-
 }
