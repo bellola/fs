@@ -34,7 +34,7 @@ export default class ImagePickerExample extends React.Component {
 
 
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-
+        
         <Button
         title="Take a selfie"
         onPress={()=>this.setState({takePicture: true})}
