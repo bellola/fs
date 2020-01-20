@@ -1,50 +1,77 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, ShadowPropTypesIOS } from 'react-native';
 import { Camera } from 'expo-camera';
+import { FontAwesome, Ionicons,MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function App() {
-  const [hasPermission, setHasPermission] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
+export default class CameraScreen extends React.Component{
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
 
-  if (hasPermission === null) {
-    return <View />;
+
+
+  takePicture = async () => {
+    if (this.camera) {
+      let photo = await this.camera.takePictureAsync({
+          quality:1,
+          base64:true});
+          props.setPhoto(photo)
+          props.closeCamera()
+    }
+   
   }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
-  return (
+
+ 
+ render(){
+   return (
+
     <View style={{ flex: 1 }}>
-      <Camera style={{ flex: 1 }} type={type}>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'transparent',
-            flexDirection: 'row',
-          }}>
-          <TouchableOpacity
-            style={{
-              flex: 0.1,
-              alignSelf: 'flex-end',
-              alignItems: 'center',
-            }}
-            onPress={() => {
-              setType(
-                type === Camera.Constants.Type.back
-                  ? Camera.Constants.Type.front
-                  : Camera.Constants.Type.back
-              );
-            }}>
-            <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Flip </Text>
-          </TouchableOpacity>
+      <Camera style={{ flex: 1 }} type={type}  ref={ref => {this.camera = ref }}>
+        <View style={{flex:1, flexDirection:"row",justifyContent:"space-between",margin:20}}>
+            <TouchableOpacity
+                style={{
+                alignSelf: 'flex-end',
+                alignItems: 'center',
+                backgroundColor: 'transparent',                  
+                }}>
+                <Ionicons
+                    name="ios-photos"
+                    style={{ color: "#fff", fontSize: 40}}
+                />
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={{
+                alignSelf: 'flex-end',
+                alignItems: 'center',
+                backgroundColor: 'transparent',
+                }}
+                onPress={takePicture()}
+                >
+                <FontAwesome
+                    name="camera"
+                    style={{ color: "#fff", fontSize: 40}}
+                />
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={{
+                alignSelf: 'flex-end',
+                alignItems: 'center',
+                backgroundColor: 'transparent',
+                }}
+                onPress={() => {
+                    setType(
+                      type === Camera.Constants.Type.back
+                        ? Camera.Constants.Type.front
+                        : Camera.Constants.Type.back
+                    );
+                  }}
+                >
+                <MaterialCommunityIcons
+                    name="camera-switch"
+                    style={{ color: "#fff", fontSize: 40}}
+                />
+            </TouchableOpacity>
         </View>
       </Camera>
     </View>
   );
+}
 }

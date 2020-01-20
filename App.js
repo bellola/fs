@@ -23,12 +23,16 @@ export default class ImagePickerExample extends React.Component {
     this.setState({modalVisible: visible});
   }
 
+  closeCamera = () => {
+    this.setState({modalVisible:false})
+  }
+
   render() {
     let { image } = this.state;
     let { image64 } = this.state
     let { ageGuess } = this.state
 
-
+  
     return (
 
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -41,7 +45,7 @@ export default class ImagePickerExample extends React.Component {
           }}>
              {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}> */}
               
-                <CameraScreen />
+                <CameraScreen closeCamera={this.closeCamera} setImage={this.setPhoto}  />
               
               
              {/* </View> */}
@@ -50,7 +54,7 @@ export default class ImagePickerExample extends React.Component {
           </Modal>
         
         <Button
-        title="        Take a selfie          "
+        title="Take a selfie"
         onPress={()=>this.setModalVisible(!this.state.modalVisible)}
         />
         
@@ -99,6 +103,12 @@ export default class ImagePickerExample extends React.Component {
     }
   }
 
+  setPhoto = (result) => {
+    this.setState({ image: result.uri, 
+      image64: result.base64
+    });
+  }
+
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -108,7 +118,7 @@ export default class ImagePickerExample extends React.Component {
       base64: true
     });
 
-
+  
 
     // console.log(result);
 
