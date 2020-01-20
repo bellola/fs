@@ -1,11 +1,10 @@
 
 import * as React from 'react';
-import { Button, Image, View, Text, TouchableOpacity } from 'react-native';
+import { Button, Image, View, Text, TouchableHighlight, Alert, Modal } from 'react-native';
 import { Camera } from 'expo-camera'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
-import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import axios from 'axios'
 
 
@@ -14,30 +13,50 @@ export default class ImagePickerExample extends React.Component {
     image: null,
     image64: null,
     ageGuess: null,
-    takePicture: null,
+    takingPicture: false,
+    modalVisible: false,
     type: Camera.Constants.Type.back,
   };
+
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
 
   render() {
     let { image } = this.state;
     let { image64 } = this.state
     let { ageGuess } = this.state
-    let {takePicture} = this.state
-    
 
 
     return (
 
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+       <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+             <View style={{marginTop: 22}}>
+            <View>
+              <Text>Hello World!</Text>
+
+              <TouchableHighlight
+                onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                }}>
+                <Text>Hide Modal</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
 
 
-
-
-
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          </Modal>
         
         <Button
-        title="Take a selfie"
-        onPress={()=>this.setState({takePicture: true})}
+        title="        Take a selfie          "
+        onPress={()=>this.setModalVisible(!this.state.modalVisible)}
         />
         
        <Button
