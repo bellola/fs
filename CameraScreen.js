@@ -4,4 +4,4 @@ import { Camera } from 'expo-camera'
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 
 
-export default class 
+
