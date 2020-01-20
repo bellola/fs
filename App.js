@@ -6,6 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import axios from 'axios'
+import CameraScreen from './CameraScreen'
 
 
 export default class ImagePickerExample extends React.Component {
@@ -38,18 +39,12 @@ export default class ImagePickerExample extends React.Component {
           onRequestClose={() => {
             Alert.alert('Modal has been closed.');
           }}>
-             <View style={{marginTop: 22}}>
-            <View>
-              <Text>Hello World!</Text>
-
-              <TouchableHighlight
-                onPress={() => {
-                  this.setModalVisible(!this.state.modalVisible);
-                }}>
-                <Text>Hide Modal</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
+             {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}> */}
+              
+                <CameraScreen />
+              
+              
+             {/* </View> */}
 
 
           </Modal>
