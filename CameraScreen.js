@@ -42,7 +42,11 @@ this.state = {
           this.props.setPhoto(photo)
           this.props.closeCamera()
     }
-   
+  }
+
+  selectPicture = async() => {
+    await this.props.pickImage();
+    this.props.closeCamera()
   }
 
  
@@ -68,7 +72,9 @@ this.state = {
                 alignSelf: 'flex-end',
                 alignItems: 'center',
                 backgroundColor: 'transparent',                  
-                }}>
+                }}
+                onPress={() => this.selectPicture()}
+                >
                 <Ionicons
                     name="ios-photos"
                     style={{ color: "#fff", fontSize: 40}}

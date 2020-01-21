@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { Button, Image, View, Text, TouchableHighlight, Alert, Modal } from 'react-native';
+import { Button, Image, View, Text, StyleSheet, Alert, Modal, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -14,7 +14,7 @@ export default class ImagePickerExample extends React.Component {
     super()
 
 
-
+    this._pickImage = this._pickImage.bind(this)
     this.setPhoto =this.setPhoto.bind(this)
     this.closeCamera = this.closeCamera.bind(this)
   }
@@ -54,25 +54,16 @@ export default class ImagePickerExample extends React.Component {
           onRequestClose={() => {
             Alert.alert('Modal has been closed.');
           }}>
-             {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}> */}
-              
-                <CameraScreen closeCamera={this.closeCamera} setPhoto={this.setPhoto}  />
-              
-              
-             {/* </View> */}
-
-
+          
+                <CameraScreen closeCamera={this.closeCamera} setPhoto={this.setPhoto} pickImage={this._pickImage} />
           </Modal>
         
         <Button
-        title="Take a selfie"
+        title="Take a picture"
         onPress={()=>this.setModalVisible(!this.state.modalVisible)}
+        style={styles.button}
         />
-        
-       <Button
-          title="Pick an image from camera roll"
-          onPress={this._pickImage}
-        />
+    
         <Button
         title="Analize"
         onPress={()=>this.scannerThunk(image64)}
@@ -159,4 +150,21 @@ export default class ImagePickerExample extends React.Component {
         // this.setState({ageGuess: response.request.response})
       })
     };
+
+
 }
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: 'blue',
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 12,
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+    overflow: 'hidden',
+    padding: 12,
+    textAlign:'center',
+  }
+});
