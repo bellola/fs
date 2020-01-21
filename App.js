@@ -7,7 +7,7 @@ import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import axios from 'axios'
 import CameraScreen from './CameraScreen'
-import {Header} from 'react-native-elements'
+import Results from './Results'
 
 
 export default class ImagePickerExample extends React.Component {
@@ -18,6 +18,7 @@ export default class ImagePickerExample extends React.Component {
     this._pickImage = this._pickImage.bind(this)
     this.setPhoto =this.setPhoto.bind(this)
     this.closeCamera = this.closeCamera.bind(this)
+    this.startAgain = this.startAgain.bind(this)
   }
 
 
@@ -27,17 +28,36 @@ export default class ImagePickerExample extends React.Component {
     image64: null,
     ageGuess: null,
     takingPicture: false,
-    modalVisible: false,
+    modal1Visible: false,
+    modal2Visible: false,
     type: Camera.Constants.Type.back,
   };
 
   setModalVisible(visible) {
-    this.setState({modalVisible: visible});
+    this.setState({modal1Visible: visible});
   }
 
+
   closeCamera = () => {
-    this.setState({modalVisible:false})
+    this.setState({modal1Visible:false})
   }
+
+  resultHandler = (image64) => {
+    this.scannerThunk(image64)
+    this.setState({modal2Visible: !this.state.modal2Visible})
+
+  }
+
+  startAgain = () =>{
+    this.setState({image: null, 
+      image64: null, 
+      ageGuess: null, 
+      takePicture: null,
+      modal2Visible: false
+    })
+    
+  }
+
 
   render() {
     let { image } = this.state;
@@ -53,17 +73,26 @@ export default class ImagePickerExample extends React.Component {
        <Modal
           animationType="slide"
           transparent={false}
-          visible={this.state.modalVisible}
+          visible={this.state.modal1Visible}
           onRequestClose={() => {
             Alert.alert('Modal has been closed.');
           }}>
           
                 <CameraScreen closeCamera={this.closeCamera} setPhoto={this.setPhoto} pickImage={this._pickImage} />
           </Modal>
+        <Modal
+        animationType="slide"
+        transparent={false}
+        visible={this.state.modal2Visible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+            <Results startAgain={this.startAgain} ageGuess={this.state.ageGuess} />
+        </Modal>
         <Image source={require("./assets/wmaa.png")} style={{width:250,height:125}} />
           {!image &&
         <TouchableHighlight
-        onPress={()=>this.setModalVisible(!this.state.modalVisible)}
+        onPress={()=>this.setModalVisible(!this.state.modal1Visible)}
         >
           <Image
           source={require("./assets/camera.png")}
@@ -77,8 +106,8 @@ export default class ImagePickerExample extends React.Component {
           <View>
                <Image source={{ uri: image }} style={{ width: 200, height: 200, borderRadius:100 }} />
                <TouchableHighlight
-               onPress={()=>this.scannerThunk(image64)}
-               
+               onPress={()=>this.resultHandler(image64)}
+
                >
                   <Image source={require('./assets/tellme.png')} style={{height: 100, width:200}} />
                </TouchableHighlight>

@@ -49,6 +49,7 @@ this.state = {
     this.props.closeCamera()
   }
 
+
  
  render(){
     console.log(this.props)
