@@ -10,6 +10,17 @@ import CameraScreen from './CameraScreen'
 
 
 export default class ImagePickerExample extends React.Component {
+  constructor(){
+    super()
+
+
+
+    this.setPhoto =this.setPhoto.bind(this)
+    this.closeCamera = this.closeCamera.bind(this)
+  }
+
+
+
   state = {
     image: null,
     image64: null,
@@ -45,7 +56,7 @@ export default class ImagePickerExample extends React.Component {
           }}>
              {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}> */}
               
-                <CameraScreen closeCamera={this.closeCamera} setImage={this.setPhoto}  />
+                <CameraScreen closeCamera={this.closeCamera} setPhoto={this.setPhoto}  />
               
               
              {/* </View> */}
@@ -136,7 +147,7 @@ export default class ImagePickerExample extends React.Component {
   scannerThunk = async image => {
     // let request = base64.toByteArray(image)
     let request = image
-     await  axios.post('http://10.13.46.56:3000/test', {
+     await  axios.post('http://192.168.1.81:3000/test', {
     //  hey: 'there'
     request
     })

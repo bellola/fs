@@ -1,30 +1,67 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Text, View, TouchableOpacity, ShadowPropTypesIOS } from 'react-native';
 import { Camera } from 'expo-camera';
+import * as Permissions from 'expo-permissions';
 import { FontAwesome, Ionicons,MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default class CameraScreen extends React.Component{
 
+constructor(props){
+    super(props)
+
+this.state = {
+
+    hasPermission: null,
+    cameraType: Camera.Constants.Type.back,
+
+}
+
+}
 
 
+  async componentDidMount() {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    this.setState({ hasPermission: status === 'granted' });
+  }
+
+  handleCameraType=()=>{
+    const { cameraType } = this.state
+
+    this.setState({cameraType:
+      cameraType === Camera.Constants.Type.back
+      ? Camera.Constants.Type.front
+      : Camera.Constants.Type.back
+    })
+  }
 
   takePicture = async () => {
     if (this.camera) {
       let photo = await this.camera.takePictureAsync({
           quality:1,
           base64:true});
-          props.setPhoto(photo)
-          props.closeCamera()
+          this.props.setPhoto(photo)
+          this.props.closeCamera()
     }
    
   }
 
  
  render(){
-   return (
+    console.log(this.props)
+    const { hasPermission } = this.state
+    if (hasPermission === null) {
+      return <View />;
+    } else if (hasPermission === false) {
+      return <Text>No access to camera</Text>;
+    } else {
+       
+      return (
+
+
+ 
 
     <View style={{ flex: 1 }}>
-      <Camera style={{ flex: 1 }} type={type}  ref={ref => {this.camera = ref }}>
+      <Camera style={{ flex: 1 }}  type={this.state.cameraType} ref={ref => {this.camera = ref }}>
         <View style={{flex:1, flexDirection:"row",justifyContent:"space-between",margin:20}}>
             <TouchableOpacity
                 style={{
@@ -43,7 +80,7 @@ export default class CameraScreen extends React.Component{
                 alignItems: 'center',
                 backgroundColor: 'transparent',
                 }}
-                onPress={takePicture()}
+                onPress={() => this.takePicture()}
                 >
                 <FontAwesome
                     name="camera"
@@ -56,13 +93,7 @@ export default class CameraScreen extends React.Component{
                 alignItems: 'center',
                 backgroundColor: 'transparent',
                 }}
-                onPress={() => {
-                    setType(
-                      type === Camera.Constants.Type.back
-                        ? Camera.Constants.Type.front
-                        : Camera.Constants.Type.back
-                    );
-                  }}
+                onPress={() => this.handleCameraType()}
                 >
                 <MaterialCommunityIcons
                     name="camera-switch"
@@ -74,4 +105,4 @@ export default class CameraScreen extends React.Component{
     </View>
   );
 }
-}
+}}
