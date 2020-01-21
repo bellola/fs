@@ -111,11 +111,7 @@ export default class ImagePickerExample extends React.Component {
                >
                   <Image source={require('./assets/tellme.png')} style={{height: 100, width:200}} />
                </TouchableHighlight>
-               <TouchableHighlight
-                onPress={() => this.setState({image: null, image64: null, ageGuess: null, takePicture: null})}
-               >
-                  <Image source={require("./assets/tryagain.png")} style={{height: 100, width:250}} />
-                </TouchableHighlight>
+            
           </View>
           }
         {ageGuess &&

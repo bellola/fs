@@ -52,7 +52,6 @@ this.state = {
 
  
  render(){
-    console.log(this.props)
     const { hasPermission } = this.state
     if (hasPermission === null) {
       return <View />;
