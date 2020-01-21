@@ -1,12 +1,13 @@
 
 import * as React from 'react';
-import { Button, Image, View, Text, StyleSheet, Alert, Modal } from 'react-native';
+import {Image, View, Text, StyleSheet, Alert, Modal, TouchableHighlight } from 'react-native';
 import { Camera } from 'expo-camera'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import axios from 'axios'
 import CameraScreen from './CameraScreen'
+import {Header} from 'react-native-elements'
 
 
 export default class ImagePickerExample extends React.Component {
@@ -47,6 +48,8 @@ export default class ImagePickerExample extends React.Component {
     return (
 
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      
+
        <Modal
           animationType="slide"
           transparent={false}
@@ -57,21 +60,33 @@ export default class ImagePickerExample extends React.Component {
           
                 <CameraScreen closeCamera={this.closeCamera} setPhoto={this.setPhoto} pickImage={this._pickImage} />
           </Modal>
-        <Image source={require("./assets/wmaa.png")} style={{width:408,height:203}} size/>
+        <Image source={require("./assets/wmaa.png")} style={{width:250,height:125}} />
           {!image &&
-        <Button
-        title="Take a picture"
+        <TouchableHighlight
         onPress={()=>this.setModalVisible(!this.state.modalVisible)}
-        style={styles.button}
-        />
+        >
+          <Image
+          source={require("./assets/camera.png")}
+          style={{height:250, width: 125}}
+          />
+        </TouchableHighlight>
           }
     
 
         {image &&
           <View>
                <Image source={{ uri: image }} style={{ width: 200, height: 200, borderRadius:100 }} />
-               <Button title="Analize" onPress={()=>this.scannerThunk(image64)}/>
-                  <Button title="Reset"onPress={() => this.setState({image: null, image64: null, ageGuess: null, takePicture: null})} />
+               <TouchableHighlight
+               onPress={()=>this.scannerThunk(image64)}
+               
+               >
+                  <Image source={require('./assets/tellme.png')} style={{height: 100, width:200}} />
+               </TouchableHighlight>
+               <TouchableHighlight
+                onPress={() => this.setState({image: null, image64: null, ageGuess: null, takePicture: null})}
+               >
+                  <Image source={require("./assets/tryagain.png")} style={{height: 100, width:250}} />
+                </TouchableHighlight>
           </View>
           }
         {ageGuess &&
