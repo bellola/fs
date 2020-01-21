@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { Button, Image, View, Text, StyleSheet, Alert, Modal, TouchableOpacity } from 'react-native';
+import { Button, Image, View, Text, StyleSheet, Alert, Modal } from 'react-native';
 import { Camera } from 'expo-camera'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -57,25 +57,26 @@ export default class ImagePickerExample extends React.Component {
           
                 <CameraScreen closeCamera={this.closeCamera} setPhoto={this.setPhoto} pickImage={this._pickImage} />
           </Modal>
-        
+        <Image source={require("./assets/wmaa.png")} style={{width:408,height:203}} size/>
+          {!image &&
         <Button
         title="Take a picture"
         onPress={()=>this.setModalVisible(!this.state.modalVisible)}
         style={styles.button}
         />
+          }
     
-        <Button
-        title="Analize"
-        onPress={()=>this.scannerThunk(image64)}
-        />
+
         {image &&
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+          <View>
+               <Image source={{ uri: image }} style={{ width: 200, height: 200, borderRadius:100 }} />
+               <Button title="Analize" onPress={()=>this.scannerThunk(image64)}/>
+                  <Button title="Reset"onPress={() => this.setState({image: null, image64: null, ageGuess: null, takePicture: null})} />
+          </View>
+          }
         {ageGuess &&
         <Text>  {this.state.ageGuess}</Text>}
-        <Button
-        title="Reset"
-        onPress={() => this.setState({image: null, image64: null, ageGuess: null, takePicture: null})}
-        />
+     
       </View>
       
     );
