@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Image, TouchableHighlight, Text } from 'react-native';
+import * as Font from 'expo-font'
 
 
 
@@ -26,6 +27,9 @@ constructor(props){
 
 componentDidMount() {
     this.next();
+    Font.loadAsync({
+        'EraserRegular' : require('./assets/EraserRegular.ttf')
+      })
 }
 
 
@@ -50,8 +54,8 @@ render(){
             />
             }
             {this.props.ageGuess &&
-            <View>
-                <Text>    {this.props.ageGuess}</Text>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{fontFamily:'EraserRegular', fontSize:28}}>    {this.props.ageGuess}</Text>
                <TouchableHighlight
                     onPress={() => this.props.startAgain()}
                     >

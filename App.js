@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import {Image, View, Text, StyleSheet, Alert, Modal, TouchableHighlight } from 'react-native';
+import {Image, View, Text, StyleSheet, Alert, Modal, TouchableHighlight, ScrollView } from 'react-native';
 import { Camera } from 'expo-camera'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -9,6 +9,8 @@ import axios from 'axios'
 import CameraScreen from './CameraScreen'
 import Results from './Results'
 
+
+console.disableYellowBox = true;
 
 export default class ImagePickerExample extends React.Component {
   constructor(){
@@ -23,6 +25,7 @@ export default class ImagePickerExample extends React.Component {
 
 
 
+
   state = {
     image: null,
     image64: null,
@@ -33,6 +36,7 @@ export default class ImagePickerExample extends React.Component {
     type: Camera.Constants.Type.back,
   };
 
+  
   setModalVisible(visible) {
     this.setState({modal1Visible: visible});
   }
@@ -67,7 +71,7 @@ export default class ImagePickerExample extends React.Component {
   
     return (
 
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <ScrollView contentContainerStyle={styles.container}>
       
 
        <Modal
@@ -89,16 +93,21 @@ export default class ImagePickerExample extends React.Component {
         }}>
             <Results startAgain={this.startAgain} ageGuess={this.state.ageGuess} />
         </Modal>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} >
         <Image source={require("./assets/wmaa.png")} style={{width:250,height:125}} />
+       </View>
           {!image &&
-        <TouchableHighlight
-        onPress={()=>this.setModalVisible(!this.state.modal1Visible)}
-        >
-          <Image
-          source={require("./assets/camera.png")}
-          style={{height:250, width: 125}}
-          />
-        </TouchableHighlight>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Image source={require('./assets/face.png')} style={{width:175,height:175}} />
+          <TouchableHighlight
+          onPress={()=>this.setModalVisible(!this.state.modal1Visible)}
+          >
+            <Image
+            source={require("./assets/camera.png")}
+            style={{height:250, width: 125}}
+            />
+          </TouchableHighlight>
+        </View>
           }
     
 
@@ -117,7 +126,7 @@ export default class ImagePickerExample extends React.Component {
         {ageGuess &&
         <Text>  {this.state.ageGuess}</Text>}
      
-      </View>
+      </ScrollView>
       
     );
   }
@@ -207,5 +216,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: 12,
     textAlign:'center',
+  },
+  container:{
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center' 
   }
 });
